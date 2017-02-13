@@ -1,0 +1,5 @@
+struct shairport_lcm_t
+{
+    string  message; // play, stop, volume
+    int32_t value;
+}

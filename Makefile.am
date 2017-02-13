@@ -50,6 +50,10 @@ if USE_DNS_SD
 shairport_sync_SOURCES += mdns_dns_sd.c
 endif
 
+if USE_LCM
+shairport_sync_SOURCES += lcm/shairport_lcm.c
+endif
+
 install-exec-hook:
 if INSTALL_CONFIG_FILES
 	[ -e $(DESTDIR)$(sysconfdir) ] || mkdir $(DESTDIR)$(sysconfdir)

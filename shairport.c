@@ -74,6 +74,10 @@ void shairport_shutdown() {
   rtsp_request_shutdown_stream();
   if (config.output)
     config.output->deinit();
+
+#ifdef CONFIG_LCM
+  shairport_lcm_shutdown();
+#endif
 }
 
 static void sig_ignore(int foo, siginfo_t *bar, void *baz) {}
@@ -1055,6 +1059,9 @@ int main(int argc, char **argv) {
   memcpy(config.hw_addr, ap_md5, sizeof(config.hw_addr));
 #ifdef CONFIG_METADATA
   metadata_init(); // create the metadata pipe if necessary
+#endif
+#ifdef CONFIG_LCM
+  shairport_lcm_init();
 #endif
   daemon_log(LOG_INFO,"Successful Startup");
   rtsp_listen_loop();

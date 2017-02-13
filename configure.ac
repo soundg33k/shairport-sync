@@ -4,6 +4,7 @@
 AC_PREREQ([2.50])
 AC_INIT([shairport-sync], [2.8.6], [mikebrady@eircom.net])
 AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([subdir-objects])
 AC_CONFIG_SRCDIR([shairport.c])
 AC_CONFIG_HEADERS([config.h])
 
@@ -181,6 +182,14 @@ AC_ARG_WITH(alsa, [  --with-alsa = choose ALSA API support (GNU/Linux only)],
   fi ])
 AM_CONDITIONAL([USE_ALSA], [test "x$HAS_ALSA" = "x1"])
 
+# Look for LCM flag
+AC_ARG_WITH(lcm, [  --with-lcm = choose lcm support], [
+  AC_MSG_RESULT(>>Including lcm)
+  HAS_LCM=1
+  AC_DEFINE([CONFIG_LCM], 1, [Needed by the compiler.])
+  AC_CHECK_LIB([lcm], [lcm_create], , AC_MSG_ERROR(lcm support requires the lcm library!))], )
+AM_CONDITIONAL([USE_LCM], [test "x$HAS_LCM" = "x1"])
+
 # Look for SNDIO flag
 AC_ARG_WITH(sndio, [  --with-sndio = choose SNDIO API support (FreeBSD) -- probably broken], [
   AC_MSG_RESULT(>>Including a SNDIO back end -- N.B. this is probably broken!)
@@ -259,8 +268,8 @@ AC_TYPE_UINT8_T
 AC_FUNC_ALLOCA
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
+#AC_FUNC_MALLOC
+#AC_FUNC_REALLOC
 AC_CHECK_FUNCS([atexit clock_gettime gethostname inet_ntoa memchr memmove memset mkfifo pow select socket stpcpy strcasecmp strchr strdup strerror strstr strtol strtoul])
 
 AC_CONFIG_FILES([Makefile man/Makefile scripts/shairport-sync.service])

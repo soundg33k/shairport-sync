@@ -50,6 +50,11 @@
 #include <openssl/md5.h>
 #endif
 
+#ifdef CONFIG_LCM
+#include "lcm/shairport_lcm.h"
+#endif
+
+
 #ifdef HAVE_LIBPOLARSSL
 #include <polarssl/md5.h>
 #endif
@@ -870,6 +875,9 @@ static void handle_set_parameter_parameter(rtsp_conn_info *conn,
 
     if (!strncmp(cp, "volume: ", 8)) {
       float volume = atof(cp + 8);
+#ifdef CONFIG_LCM
+      shairport_lcm_volume(volume);
+#endif
       if (config.ignore_volume_control == 0) {
         debug(2, "volume: %f\n", volume);
         player_volume(volume);

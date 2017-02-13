@@ -1,0 +1,17 @@
+import lcm
+from shairport_lcm_t import shairport_lcm_t
+
+def process_shairport_message(channel, data):
+        msg = shairport_lcm_t.decode(data)
+        #print("Received message on channel \"%s\"" % channel)
+        print("message     = %s" % str(msg.message))
+        print("value     = %s" % str(msg.value))
+
+lc = lcm.LCM()
+subscription = lc.subscribe("DEFAULT", process_shairport_message)
+
+try:
+	while True:
+		lc.handle()
+except KeyboardInterrupt:
+	pass

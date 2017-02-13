@@ -1677,6 +1677,11 @@ void player_flush(uint32_t timestamp) {
 }
 
 int player_play(stream_cfg *stream, pthread_t *player_thread) {
+
+#ifdef CONFIG_LCM
+        shairport_lcm_start();
+#endif
+
 	//if (*player_thread!=NULL)
 	//	die("Trying to create a second player thread for this RTSP session");
   packet_count = 0;
@@ -1729,6 +1734,9 @@ int player_play(stream_cfg *stream, pthread_t *player_thread) {
 }
 
 void player_stop(pthread_t *player_thread) {
+#ifdef CONFIG_LCM
+	shairport_lcm_stop();
+#endif
 	//if (*thread==NULL)
 	//	debug(1,"Trying to stop a non-existent player thread");
 	// else {
