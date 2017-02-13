@@ -12,6 +12,7 @@ void shairport_lcm_shutdown(){
 	if(lcm)
 	{
 		lcm_destroy(lcm);
+		lcm = NULL;
 	}
 }
 
